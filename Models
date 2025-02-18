@@ -1,0 +1,10 @@
+import android.app.*
+import android.content.*
+import android.os.Build
+import androidx.core.app.NotificationCompat
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.*
+
+data class Car(val id: String, val licensePlate: String, val customerId: String)
+data class Customer(val id: String, val name: String, val maxSpeedLimit: Float)
