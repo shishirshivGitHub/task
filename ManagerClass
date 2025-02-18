@@ -1,0 +1,6 @@
+class SpeedLimitManager { 
+    private val limits = mutableMapOf<String, Float>()
+    fun setSpeedLimit(id: String, limit: Float) { limits[id] = limit }
+    fun getSpeedLimit(id: String) = limits[id] ?: error("Speed limit not set")
+}
+
