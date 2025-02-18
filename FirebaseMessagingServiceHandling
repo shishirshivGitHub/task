@@ -1,0 +1,13 @@
+class FirebaseNotificationServiceImpl : FirebaseMessagingService() {
+    override fun onMessageReceived(msg: RemoteMessage) {
+        msg.notification?.let { sendNotification(it.title ?: "Speed Alert", it.body ?: "Your car exceeded the speed limit.") }
+    }
+    private fun sendNotification(title: String, body: String) {
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val channelId = "SPEED_ALERT_CHANNEL"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            manager.createNotificationChannel(NotificationChannel(channelId, "Speed Alerts", NotificationManager.IMPORTANCE_HIGH))
+        }
+        manager.notify(0, NotificationCompat.Builder(this, channelId).setSmallIcon(android.R.drawable.ic_dialog_alert).setContentTitle(title).setContentText(body).setAutoCancel(true).build())
+    }
+}
