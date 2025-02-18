@@ -1,0 +1,14 @@
+class SpeedMonitorServiceImpl(private val manager: SpeedLimitManager, private val service: NotificationService) : SpeedMonitorService {
+    override fun trackSpeed(car: Car, speed: Float) { if (speed > manager.getSpeedLimit(car.customerId)) { service.notifyRentalCompany(car, speed); service.alertUser(car) } }
+}
+
+class FirebaseNotificationHandleService : NotificationService {
+    private val db = FirebaseFirestore.getInstance(); private val fcm = FirebaseMessaging.getInstance()
+    override fun notifyRentalCompany(car: Car, speed: Float) {
+        db.collection("SpeedViolations").add(mapOf("carId" to car.id, "licensePlate" to car.licensePlate, "speed" to speed, "timestamp" to System.currentTimeMillis()))
+            .addOnSuccessListener { println("Violation for ${car.licensePlate}") }
+            .addOnFailureListener { println("Failed to log violation for ${car.licensePlate}") }
+    }
+    override fun alertUser(car: Car) { fcm.subscribeToTopic("user_${car.id}") }
+}
+
