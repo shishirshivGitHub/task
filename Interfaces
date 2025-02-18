@@ -1,0 +1,3 @@
+interface SpeedMonitorService { fun trackSpeed(car: Car, speed: Float) }
+interface NotificationService { fun notifyRentalCompany(car: Car, speed: Float); fun alertUser(car: Car) }
+
